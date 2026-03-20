@@ -28,7 +28,7 @@ func (s *WebhookService) Verify(payload []byte, signature string) (*WebhookEvent
 
 	mac := hmac.New(sha256.New, []byte(s.secret))
 	mac.Write(payload)
-	expected := hex.EncodeToString(mac.Sum(nil))
+	expected := "sha256=" + hex.EncodeToString(mac.Sum(nil))
 
 	if !hmac.Equal([]byte(expected), []byte(signature)) {
 		return nil, &InvalidSignatureError{}
@@ -48,7 +48,7 @@ func (s *WebhookService) IsValid(payload []byte, signature string) bool {
 	}
 	mac := hmac.New(sha256.New, []byte(s.secret))
 	mac.Write(payload)
-	expected := hex.EncodeToString(mac.Sum(nil))
+	expected := "sha256=" + hex.EncodeToString(mac.Sum(nil))
 	return hmac.Equal([]byte(expected), []byte(signature))
 }
 

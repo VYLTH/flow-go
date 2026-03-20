@@ -2,60 +2,72 @@ package flow
 
 // Invoice represents a payment invoice.
 type Invoice struct {
-	ID            string                 `json:"id"`
-	MerchantID    string                 `json:"merchant_id"`
-	Amount        float64                `json:"amount"`
-	Currency      string                 `json:"currency"`
-	Network       string                 `json:"network"`
-	Status        string                 `json:"status"`
-	WalletAddress string                 `json:"wallet_address,omitempty"`
-	Description   string                 `json:"description,omitempty"`
-	CustomerEmail string                 `json:"customer_email,omitempty"`
-	CallbackURL   string                 `json:"callback_url,omitempty"`
-	Metadata      map[string]interface{} `json:"metadata,omitempty"`
-	PaymentURL    string                 `json:"payment_url,omitempty"`
-	TxHash        string                 `json:"tx_hash,omitempty"`
-	PaidAmount    float64                `json:"paid_amount,omitempty"`
-	ExpiresAt     string                 `json:"expires_at,omitempty"`
-	CreatedAt     string                 `json:"created_at,omitempty"`
-	UpdatedAt     string                 `json:"updated_at,omitempty"`
+	ID                   string                 `json:"id"`
+	MerchantID           string                 `json:"merchant_id"`
+	Amount               float64                `json:"fiat_amount"`
+	Currency             string                 `json:"fiat_currency"`
+	Status               string                 `json:"status"`
+	Network              string                 `json:"network,omitempty"`
+	CryptoCurrency       string                 `json:"crypto_currency,omitempty"`
+	CryptoAmount         float64                `json:"crypto_amount,omitempty"`
+	WalletAddress        string                 `json:"deposit_address,omitempty"`
+	CustomerEmail        string                 `json:"customer_email,omitempty"`
+	CustomerName         string                 `json:"customer_name,omitempty"`
+	MerchantOrderID      string                 `json:"merchant_order_id,omitempty"`
+	CallbackURL          string                 `json:"callback_url,omitempty"`
+	ReturnURL            string                 `json:"return_url,omitempty"`
+	Metadata             map[string]interface{} `json:"metadata,omitempty"`
+	PaymentURL           string                 `json:"payment_url,omitempty"`
+	TxHash               string                 `json:"tx_hash,omitempty"`
+	PaidAmount           float64                `json:"received_amount,omitempty"`
+	Confirmations        int                    `json:"confirmations,omitempty"`
+	RequiredConfirmations int                   `json:"required_confirmations,omitempty"`
+	ExpiresAt            string                 `json:"expires_at,omitempty"`
+	CreatedAt            string                 `json:"created_at,omitempty"`
+	UpdatedAt            string                 `json:"updated_at,omitempty"`
 }
 
 // CreateInvoiceParams are parameters for creating an invoice.
+// Omit Network and CryptoCurrency for a flex invoice (customer picks on payment page).
 type CreateInvoiceParams struct {
-	Amount        float64                `json:"amount"`
-	Currency      string                 `json:"currency"`
-	Network       string                 `json:"network"`
-	Description   string                 `json:"description,omitempty"`
-	CustomerEmail string                 `json:"customer_email,omitempty"`
-	CallbackURL   string                 `json:"callback_url,omitempty"`
-	Metadata      map[string]interface{} `json:"metadata,omitempty"`
-	ExpiryMinutes int                    `json:"expiry_minutes,omitempty"`
+	Amount          float64                `json:"amount"`
+	Currency        string                 `json:"currency,omitempty"`
+	Network         string                 `json:"network,omitempty"`
+	CryptoCurrency  string                 `json:"crypto_currency,omitempty"`
+	MerchantOrderID string                 `json:"merchant_order_id,omitempty"`
+	CustomerEmail   string                 `json:"customer_email,omitempty"`
+	CustomerName    string                 `json:"customer_name,omitempty"`
+	CallbackURL     string                 `json:"callback_url,omitempty"`
+	ReturnURL       string                 `json:"return_url,omitempty"`
+	Metadata        map[string]interface{} `json:"metadata,omitempty"`
 }
 
 // Payout represents a vendor payout.
 type Payout struct {
-	ID          string                 `json:"id"`
-	Amount      float64                `json:"amount"`
-	Currency    string                 `json:"currency"`
-	Network     string                 `json:"network"`
-	Destination string                 `json:"destination_address"`
-	Status      string                 `json:"status"`
-	TxHash      string                 `json:"tx_hash,omitempty"`
-	Fee         float64                `json:"fee,omitempty"`
-	Metadata    map[string]interface{} `json:"metadata,omitempty"`
-	CreatedAt   string                 `json:"created_at,omitempty"`
-	CompletedAt string                 `json:"completed_at,omitempty"`
+	ID               string                 `json:"id"`
+	Network          string                 `json:"network"`
+	Currency         string                 `json:"currency"`
+	Status           string                 `json:"status"`
+	GrossAmount      float64                `json:"gross_amount"`
+	NetAmount        float64                `json:"net_amount"`
+	FeeAmount        float64                `json:"fee_amount"`
+	NMCAmount        float64                `json:"nmc_amount,omitempty"`
+	RecipientAddress string                 `json:"recipient_address"`
+	ReferenceID      string                 `json:"reference_id,omitempty"`
+	BatchID          string                 `json:"batch_id,omitempty"`
+	TxHash           string                 `json:"tx_hash,omitempty"`
+	ErrorMessage     string                 `json:"error_message,omitempty"`
+	CreatedAt        string                 `json:"created_at,omitempty"`
+	CompletedAt      string                 `json:"completed_at,omitempty"`
 }
 
 // CreatePayoutParams are parameters for creating a payout.
 type CreatePayoutParams struct {
-	Amount      float64                `json:"amount"`
-	Currency    string                 `json:"currency"`
-	Network     string                 `json:"network"`
-	Destination string                 `json:"destination_address"`
-	Metadata    map[string]interface{} `json:"metadata,omitempty"`
-	CallbackURL string                 `json:"callback_url,omitempty"`
+	Amount           float64 `json:"amount"`
+	Currency         string  `json:"currency"`
+	Network          string  `json:"network"`
+	RecipientAddress string  `json:"recipient_address"`
+	ReferenceID      string  `json:"reference_id,omitempty"`
 }
 
 // Wallet represents a deposit wallet.
@@ -108,10 +120,10 @@ type SwapParams struct {
 
 // WebhookEvent represents a verified webhook event.
 type WebhookEvent struct {
-	ID        string                 `json:"id"`
-	Type      string                 `json:"type"`
+	ID        string                 `json:"id,omitempty"`
+	Type      string                 `json:"event"`
 	Data      map[string]interface{} `json:"data"`
-	CreatedAt string                 `json:"created_at,omitempty"`
+	CreatedAt string                 `json:"timestamp,omitempty"`
 }
 
 // ListParams are common parameters for list endpoints.

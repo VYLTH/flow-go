@@ -17,16 +17,19 @@ import "time"
 const (
 	DefaultBaseURL = "https://flow.vylth.com/api/flow"
 	DefaultTimeout = 30 * time.Second
-	Version        = "0.1.0"
+	Version        = "0.4.0"
 )
 
 // Client is the Vylth Flow API client.
 type Client struct {
-	Invoices *InvoiceService
-	Payouts  *PayoutService
-	Wallets  *WalletService
-	Swaps    *SwapService
-	Webhooks *WebhookService
+	Invoices      *InvoiceService
+	Payouts       *PayoutService
+	Wallets       *WalletService
+	Swaps         *SwapService
+	Webhooks      *WebhookService
+	PaymentLinks  *PaymentLinkService
+	Subscriptions *SubscriptionService
+	Teams         *TeamService
 
 	http *httpClient
 }
@@ -44,6 +47,11 @@ func WithTimeout(d time.Duration) Option {
 	return func(c *Client) { c.http.timeout = d }
 }
 
+// WithAPISecret sets the API secret for authenticated endpoints.
+func WithAPISecret(secret string) Option {
+	return func(c *Client) { c.http.apiSecret = secret }
+}
+
 // WithWebhookSecret sets the webhook signing secret for signature verification.
 func WithWebhookSecret(secret string) Option {
 	return func(c *Client) { c.Webhooks = NewWebhookService(secret) }
@@ -51,7 +59,7 @@ func WithWebhookSecret(secret string) Option {
 
 // New creates a new Vylth Flow client.
 func New(apiKey string, opts ...Option) *Client {
-	h := newHTTPClient(apiKey, DefaultBaseURL, DefaultTimeout)
+	h := newHTTPClient(apiKey, "", DefaultBaseURL, DefaultTimeout)
 
 	c := &Client{
 		http:     h,
@@ -66,6 +74,9 @@ func New(apiKey string, opts ...Option) *Client {
 	c.Payouts = &PayoutService{http: h}
 	c.Wallets = &WalletService{http: h}
 	c.Swaps = &SwapService{http: h}
+	c.PaymentLinks = &PaymentLinkService{http: h}
+	c.Subscriptions = &SubscriptionService{http: h}
+	c.Teams = &TeamService{http: h}
 
 	return c
 }

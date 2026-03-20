@@ -15,18 +15,20 @@ import (
 const maxRetries = 3
 
 type httpClient struct {
-	baseURL string
-	apiKey  string
-	timeout time.Duration
-	client  *http.Client
+	baseURL   string
+	apiKey    string
+	apiSecret string
+	timeout   time.Duration
+	client    *http.Client
 }
 
-func newHTTPClient(apiKey, baseURL string, timeout time.Duration) *httpClient {
+func newHTTPClient(apiKey, apiSecret, baseURL string, timeout time.Duration) *httpClient {
 	return &httpClient{
-		baseURL: baseURL,
-		apiKey:  apiKey,
-		timeout: timeout,
-		client:  &http.Client{Timeout: timeout},
+		baseURL:   baseURL,
+		apiKey:    apiKey,
+		apiSecret: apiSecret,
+		timeout:   timeout,
+		client:    &http.Client{Timeout: timeout},
 	}
 }
 
@@ -63,6 +65,9 @@ func (h *httpClient) do(ctx context.Context, method, path string, body interface
 		req.Header.Set("X-API-Key", h.apiKey)
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("User-Agent", "flow-go/"+Version)
+		if h.apiSecret != "" {
+			req.Header.Set("X-API-Secret", h.apiSecret)
+		}
 
 		// Reset body reader for retries
 		if body != nil {
