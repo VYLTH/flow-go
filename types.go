@@ -2,29 +2,29 @@ package flow
 
 // Invoice represents a payment invoice.
 type Invoice struct {
-	ID                   string                 `json:"id"`
-	MerchantID           string                 `json:"merchant_id"`
-	Amount               float64                `json:"fiat_amount"`
-	Currency             string                 `json:"fiat_currency"`
-	Status               string                 `json:"status"`
-	Network              string                 `json:"network,omitempty"`
-	CryptoCurrency       string                 `json:"crypto_currency,omitempty"`
-	CryptoAmount         float64                `json:"crypto_amount,omitempty"`
-	WalletAddress        string                 `json:"deposit_address,omitempty"`
-	CustomerEmail        string                 `json:"customer_email,omitempty"`
-	CustomerName         string                 `json:"customer_name,omitempty"`
-	MerchantOrderID      string                 `json:"merchant_order_id,omitempty"`
-	CallbackURL          string                 `json:"callback_url,omitempty"`
-	ReturnURL            string                 `json:"return_url,omitempty"`
-	Metadata             map[string]interface{} `json:"metadata,omitempty"`
-	PaymentURL           string                 `json:"payment_url,omitempty"`
-	TxHash               string                 `json:"tx_hash,omitempty"`
-	PaidAmount           float64                `json:"received_amount,omitempty"`
-	Confirmations        int                    `json:"confirmations,omitempty"`
-	RequiredConfirmations int                   `json:"required_confirmations,omitempty"`
-	ExpiresAt            string                 `json:"expires_at,omitempty"`
-	CreatedAt            string                 `json:"created_at,omitempty"`
-	UpdatedAt            string                 `json:"updated_at,omitempty"`
+	ID                    string                 `json:"id"`
+	MerchantID            string                 `json:"merchant_id"`
+	Amount                float64                `json:"fiat_amount,string"`
+	Currency              string                 `json:"fiat_currency"`
+	Status                string                 `json:"status"`
+	Network               string                 `json:"network,omitempty"`
+	CryptoCurrency        string                 `json:"crypto_currency,omitempty"`
+	CryptoAmount          float64                `json:"crypto_amount,string,omitempty"`
+	WalletAddress         string                 `json:"deposit_address,omitempty"`
+	CustomerEmail         string                 `json:"customer_email,omitempty"`
+	CustomerName          string                 `json:"customer_name,omitempty"`
+	MerchantOrderID       string                 `json:"merchant_order_id,omitempty"`
+	CallbackURL           string                 `json:"callback_url,omitempty"`
+	ReturnURL             string                 `json:"return_url,omitempty"`
+	Metadata              map[string]interface{} `json:"metadata,omitempty"`
+	PaymentURL            string                 `json:"payment_url,omitempty"`
+	TxHash                string                 `json:"tx_hash,omitempty"`
+	PaidAmount            float64                `json:"received_amount,string,omitempty"`
+	Confirmations         int                    `json:"confirmations,omitempty"`
+	RequiredConfirmations int                    `json:"required_confirmations,omitempty"`
+	ExpiresAt             string                 `json:"expires_at,omitempty"`
+	CreatedAt             string                 `json:"created_at,omitempty"`
+	UpdatedAt             string                 `json:"updated_at,omitempty"`
 }
 
 // CreateInvoiceParams are parameters for creating an invoice.
@@ -48,10 +48,10 @@ type Payout struct {
 	Network          string                 `json:"network"`
 	Currency         string                 `json:"currency"`
 	Status           string                 `json:"status"`
-	GrossAmount      float64                `json:"gross_amount"`
-	NetAmount        float64                `json:"net_amount"`
-	FeeAmount        float64                `json:"fee_amount"`
-	NMCAmount        float64                `json:"nmc_amount,omitempty"`
+	GrossAmount      float64                `json:"gross_amount,string"`
+	NetAmount        float64                `json:"net_amount,string"`
+	FeeAmount        float64                `json:"fee_amount,string"`
+	NMCAmount        float64                `json:"nmc_amount,string,omitempty"`
 	RecipientAddress string                 `json:"recipient_address"`
 	ReferenceID      string                 `json:"reference_id,omitempty"`
 	BatchID          string                 `json:"batch_id,omitempty"`
@@ -76,7 +76,7 @@ type Wallet struct {
 	Address   string  `json:"address"`
 	Network   string  `json:"network"`
 	Currency  string  `json:"currency"`
-	Balance   float64 `json:"balance"`
+	Balance   float64 `json:"balance,string"`
 	Label     string  `json:"label,omitempty"`
 	CreatedAt string  `json:"created_at,omitempty"`
 }
@@ -92,9 +92,9 @@ type GenerateWalletParams struct {
 type SwapQuote struct {
 	FromCurrency string  `json:"from_currency"`
 	ToCurrency   string  `json:"to_currency"`
-	FromAmount   float64 `json:"from_amount"`
-	ToAmount     float64 `json:"to_amount"`
-	Rate         float64 `json:"rate"`
+	FromAmount   float64 `json:"from_amount,string"`
+	ToAmount     float64 `json:"to_amount,string"`
+	Rate         float64 `json:"rate,string"`
 	ExpiresAt    string  `json:"expires_at,omitempty"`
 }
 
@@ -103,9 +103,9 @@ type Swap struct {
 	ID           string  `json:"id"`
 	FromCurrency string  `json:"from_currency"`
 	ToCurrency   string  `json:"to_currency"`
-	FromAmount   float64 `json:"from_amount"`
-	ToAmount     float64 `json:"to_amount"`
-	Rate         float64 `json:"rate"`
+	FromAmount   float64 `json:"from_amount,string"`
+	ToAmount     float64 `json:"to_amount,string"`
+	Rate         float64 `json:"rate,string"`
 	Status       string  `json:"status"`
 	TxHash       string  `json:"tx_hash,omitempty"`
 	CreatedAt    string  `json:"created_at,omitempty"`
